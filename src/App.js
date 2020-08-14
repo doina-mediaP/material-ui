@@ -2,12 +2,10 @@ import React, {useState} from 'react'
 import Unsplash, {toJson} from 'unsplash-js'
 import Image from './Image/Image'
 import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
-import './App.scss'
+import {Theme, createStyles, makeStyles} from '@material-ui/core/styles';
+import Box from "@material-ui/core/Box";
 
 require('dotenv').config()
 process.env.CI = false
@@ -33,37 +31,71 @@ const Component = () => {
         setIsFirstRequest(false)
     }
 
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            root: {
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-around',
+                overflow: 'hidden',
+                backgroundColor: theme.palette.background.paper,
+            },
+            gridList: {
+                //width: 1200,
+                //  height: 450,
+            },
+            searchBox: {
+                alignItems: "center"
+            },
+            noFound: {
+                width: '100%',
+                height: 'auto',
+                display: 'flex',
+                justifyContent: 'center'
+            }
+        }),
+    );
+
+    const classes = useStyles();
     return (
 
-        <Container maxWidth="lg">
-            <div className="image-search">
-                <form onSubmit={searchImg} className="searchForm">
-                    <Grid container spacing={1}>
-                            <TextField
-                                id="outlined-basic"
-                                label="Outlined"
-                                variant="outlined"
-                                className="image-search__input"
-                                type="text"
-                                onChange={(e) => setSearchString(e.target.value)}
-                            />
+        <Box mx="auto" bgcolor="background.paper" p={3}>
+            <form onSubmit={searchImg} className="searchForm">
+                <Grid container spacing={2} className={classes.searchBox}>
+                    <Grid item lg={11} xs={12}>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic"
+                            label="Search..."
+                            variant="outlined"
+                            className="image-search__input"
+                            type="search"
+                            onChange={(e) => setSearchString(e.target.value)}
+                        />
+                    </Grid>
 
-                        <Button className="image-search__btn" variant="contained" color="primary" onClick={searchImg}>
+                    <Grid item lg={1} sx={12}>
+                        <Button
+                            fullWidth
+                            size="large"
+                            variant="contained"
+                            color="primary"
+                            onClick={searchImg}>
                             Search
                         </Button>
                     </Grid>
-                </form>
+                </Grid>
+            </form>
 
-
-                <Grid container spacing={3} className="image-search__image-list">
+            <Box mx="auto" bgcolor="background.paper" pt={5}>
+                <Grid container spacing={1}>
                     {images.length > 0 || isFirstRequest ? (
                         images.map((image, index) => {
                             return (
-                                <Grid item md={3}>
+                                <Grid item lg={3} md={4} sm={6} xs={12} key={index}>
                                     <Image
                                         src={image.urls.small}
                                         alt={image.alt_description}
-                                        ss={index}
                                         key={index}
                                         isLoaded={isLoaded}
                                     />
@@ -71,12 +103,12 @@ const Component = () => {
                             )
                         })
                     ) : (
-                        <p className="noFound">No images found</p>
+                        <h1 className={classes.noFound}>No images found</h1>
                     )}
                 </Grid>
+            </Box>
 
-            </div>
-        </Container>
+        </Box>
     )
 }
 

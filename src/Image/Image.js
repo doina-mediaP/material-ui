@@ -1,15 +1,29 @@
 import React from 'react'
+import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 const Image = ({ src, alt, isLoaded }) => {
+
+  const useStyles = makeStyles((theme: Theme) =>
+      createStyles({
+        box: {
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+        }
+      }),
+  );
+
+  const classes = useStyles();
+
   return (
-    <>
+    <React.Fragment>
         {isLoaded ? (
-          <div className="lds-spinner">
-              {new Array(12).map((index) => <div key={index+Math.random()} />)}
-          </div>
+            <CircularProgress />
         ) : (
-          <img className="image-search__image" src={src} alt={alt} />
+          <img className={classes.box} src={src} alt={alt}/>
         )}
-    </>
+    </React.Fragment>
   )
 }
 
