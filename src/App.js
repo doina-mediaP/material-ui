@@ -40,10 +40,6 @@ const Component = () => {
                 overflow: 'hidden',
                 backgroundColor: theme.palette.background.paper,
             },
-            gridList: {
-                //width: 1200,
-                //  height: 450,
-            },
             searchBox: {
                 alignItems: "center"
             },
